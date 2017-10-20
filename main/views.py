@@ -44,7 +44,7 @@ def logTollCharge(request):
 	toemail = str(vehicle.owner.email)
 	#send_mail('Toll Charge', message, frmemail, [toemail], fail_silently=False)
 	
-	return HttpResponse('Successfully charged ' + str(amount) + ' to ' + str(vehicle))
+	return HttpResponse('Successfully charged Rs.' + str(amount) + ' to ' + str(vehicle))
 
 def logGetReq(request, v_rfid):
 	r = requests.post('http://127.0.0.1:8000/log/',proxies={'http':'','https':''}, data = {'vehicle_rfid': v_rfid})
