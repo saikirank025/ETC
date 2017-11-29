@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from django.conf import settings
 from datetime import datetime
+from twilio.rest import Client
 
 def home(request):
 	return HttpResponse('Electronic Toll Collection')
@@ -28,11 +29,12 @@ def logTollCharge(request):
 	try:
 		vehicle = Vehicle.objects.get(v_rfid=vehicle_rfid)
 	except Vehicle.DoesNotExist:
-		return HttpResponseNotFound('Vehicle not found')
+		return HttpResponseNotFound('Vehicle not found')  # do some action at the toll location
 
 	amount = VehicleType.objects.get(name = vehicle.v_type).charge
 
 	vehicle.owner.wallet_bal -= int(amount)
+	userphone = vehicle.owner.phone
 	vehicle.owner.save()
 	newCharge = TollCharge(vehicle=vehicle, timestamp=datetime.now())
 	newCharge.save()
@@ -42,8 +44,15 @@ def logTollCharge(request):
 	settings.EMAIL_HOST_USER
 	frmemail = settings.EMAIL_HOST_USER
 	toemail = str(vehicle.owner.email)
-	#send_mail('Toll Charge', message, frmemail, [toemail], fail_silently=False)
+	# send_mail('Toll Charge', message, frmemail, [toemail], fail_silently=False)
 	
+	client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
+	# client.messages.create(
+	# 	to="+919494021534",
+	# 	from_="+18017973486",
+	# 	body=message
+	# )
+
 	return HttpResponse('Successfully charged Rs.' + str(amount) + ' to ' + str(vehicle))
 
 def logGetReq(request, v_rfid):

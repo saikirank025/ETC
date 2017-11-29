@@ -29,9 +29,12 @@ ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'vkompalli@student.nitw.ac.in'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = 'temppass'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+ACCOUNT_SID = "ACee8fe684904df1bdf504445569670e3c"
+AUTH_TOKEN = "2b7eef0c2b48c88a628d8c481e5b6d1b"
 
 # Application definition
 
